@@ -7,8 +7,15 @@ public class SpawnWall : MonoBehaviour
      
     [SerializeField] Transform spawnPoint; // Store position to spawn wall, might change this so the wall just moves around when you press the button until you click to instantiate it but doesn't matter right now 
 
+    Vector3 spawnPosition;
+
+    private void Awake()
+    {
+        spawnPosition = spawnPoint.transform.position;
+    }
+
     public void Spawn()
     {
-        Instantiate(wall, spawnPoint);
+        Instantiate(wall, spawnPosition, Quaternion.identity);
     }
 }
