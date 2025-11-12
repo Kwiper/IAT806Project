@@ -11,6 +11,11 @@ public class RayCastLogic : MonoBehaviour
     [SerializeField] LayerMask occlusionLayer; // Assign walls to layer so that linecast only targets this layer
 
     int raycastHitCounter; // Counts number of rays intersecting with a wall
+    int raycastAmount; // Counts the number of rays cast
+
+    public float RayCastHitCounter { get { return raycastHitCounter; } } // public getter for raycastHitCounter
+
+    public float RayCastAmount { get { return raycastAmount; } } // Returns the amount of raycasts cast
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,11 +39,14 @@ public class RayCastLogic : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        OccludeBetween();
         raycastHitCounter = 0; // Resets raycast hit counter every tick
+        raycastAmount = 0;
+        PerformRaycasts();
+
+
     }
 
-    void OccludeBetween()
+    void PerformRaycasts()
     {
         // Cycle between all raycast sources and raycast lengths, and then cast a ray from each of them
         for(int i = 0; i < raycastSources.Length; i++)
@@ -46,6 +54,7 @@ public class RayCastLogic : MonoBehaviour
             for(int j = 0; j < raycastTargets.Length; j++)
             {
                 CastLine(raycastSources[i].transform.position, raycastTargets[j].transform.position);
+                raycastAmount++;
             }
         }
     }

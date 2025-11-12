@@ -42,7 +42,7 @@ public class Grabbable : MonoBehaviour
 
     protected virtual void Awake()
     {
-        cam = FindObjectOfType<Camera>(); // Find the camera in the scene
+        cam = FindFirstObjectByType<Camera>(); // Find the camera in the scene
 
         // enable action bindings
         leftClick.Enable();
