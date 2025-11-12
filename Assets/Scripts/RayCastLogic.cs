@@ -23,17 +23,6 @@ public class RayCastLogic : MonoBehaviour
         raycastTargets = sourceObject.GetComponentsInChildren<Transform>(); // get the left, right, center targets of audio source
         raycastSources = GetComponentsInChildren<Transform>(); // Get the left, right, center targets of audio listener
 
-        /* // debug message for getting the raycast targets and sources in the array to make sure it's working properly
-        for(int i = 0; i < raycastTargets.Length; i++)
-        {
-            Debug.Log(raycastTargets[i]);
-        }
-
-        for(int i = 0; i < raycastSources.Length; i++)
-        {
-            Debug.Log(raycastSources[i]);
-        }
-        */ 
     }
 
     // Update is called once per frame
