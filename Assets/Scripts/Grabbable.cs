@@ -15,7 +15,6 @@ public class Grabbable : MonoBehaviour
 
     Camera cam; // Access camera in scene
     bool isDragging;
-    bool isRotating;
 
     protected bool isClickedOn 
     {
