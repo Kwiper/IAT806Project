@@ -13,7 +13,7 @@ public class SaveSystem : MonoBehaviour
     const string OBJECT_SUB = "/objects"; // filepath for individual objects
     const string OBJECT_COUNT_SUB = "/objects.count"; // filepath for object count
 
-    public void Save()
+    public void Save() // public function for ui buttons to access
     {
         SaveObjects();
     }
@@ -26,16 +26,16 @@ public class SaveSystem : MonoBehaviour
 
     void SaveObjects()
     {
-        BinaryFormatter formatter = new BinaryFormatter(); // Save data in binary format
+        BinaryFormatter formatter = new BinaryFormatter(); // Formatting save files in binary
         string path = Application.persistentDataPath + OBJECT_SUB + SceneManager.GetActiveScene().buildIndex;
         string countPath = Application.persistentDataPath + OBJECT_COUNT_SUB + SceneManager.GetActiveScene().buildIndex;
 
-        FileStream countStream = new FileStream(countPath, FileMode.Create);
+        FileStream countStream = new FileStream(countPath, FileMode.Create); // Create file for object count
 
         formatter.Serialize(countStream, objects.Count);
         countStream.Close();
 
-        for (int i = 0; i < objects.Count; i++)
+        for (int i = 0; i < objects.Count; i++) // iterate through object list and create save data for each object in scene
         {
             FileStream stream = new FileStream(path + i, FileMode.Create);
             ObjectData data = new ObjectData(objects[i]);
@@ -60,7 +60,7 @@ public class SaveSystem : MonoBehaviour
 
         if (File.Exists(countPath))
         {
-            FileStream countStream = new FileStream(countPath, FileMode.Open);
+            FileStream countStream = new FileStream(countPath, FileMode.Open); // First open the object count save file to get a count of objects to instantiate
 
             objectCount = (int)formatter.Deserialize(countStream);
             countStream.Close();
@@ -70,7 +70,7 @@ public class SaveSystem : MonoBehaviour
             Debug.LogError("File path not found in " + countPath);
         }
 
-        for (int i = 0; i < objectCount; i++)
+        for (int i = 0; i < objectCount; i++) // iterate through each file and load the objects back into the scene
         {
             if (File.Exists(path + i))
             {
