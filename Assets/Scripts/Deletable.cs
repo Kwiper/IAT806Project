@@ -9,6 +9,8 @@ public class Deletable : Grabbable // Inherit from Grabbable
     {
         base.Awake();
 
+        SaveSystem.objects.Add(this); // Add object to save system list for loading
+
         rightClick.Enable();
         rightClick.performed += i => { if (isHoveredOn) DestroySelf(); }; // Destroy object on right click
     }
@@ -23,5 +25,10 @@ public class Deletable : Grabbable // Inherit from Grabbable
     void DestroySelf()
     {
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        SaveSystem.objects.Remove(this); // Remove object from save file list when destroyed
     }
 }
