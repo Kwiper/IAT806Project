@@ -10,7 +10,7 @@ public class Deletable : Grabbable // Inherit from Grabbable
         base.Awake();
 
         rightClick.Enable();
-        rightClick.performed += i => { if (isClickedOn) DestroySelf(); }; // Destroy object on right click
+        rightClick.performed += i => { if (isHoveredOn) DestroySelf(); }; // Destroy object on right click
     }
 
     private void OnDisable() // Disable inputs when object is destroyed

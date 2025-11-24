@@ -10,13 +10,15 @@ public class Grabbable : MonoBehaviour
 
     Vector3 currentScreenPos; // current screen position
 
-    [SerializeField] float rotSpeed = 10f;
-    Vector2 scrollRotation;
+    [SerializeField] float rotSpeed = 10f; // Speed at which objects rotate when scrolling
+    Vector2 scrollRotation; // Vector for rotation
 
     Camera cam; // Access camera in scene
-    bool isDragging;
+    bool isDragging; // Check to see if clicking and dragging object
 
-    protected bool isClickedOn 
+    Outline outline; // Outline component
+
+    protected bool isHoveredOn 
     {
         get
         {
@@ -50,11 +52,15 @@ public class Grabbable : MonoBehaviour
         mousePos.performed += context => { currentScreenPos = context.ReadValue<Vector2>(); }; // Set current screen position to read mouse position
         scroll.performed += context => { scrollRotation = context.ReadValue<Vector2>(); }; // Read scroll wheel value
         scroll.canceled += i => { scrollRotation = Vector2.zero; }; // Reset scroll value to zero when not scrolling
-        leftClick.performed += i => { if(isClickedOn) StartCoroutine(Drag()); /*StartCoroutine(Rotate());*/ }; // Run Drag() coroutine when left click is pressed
+        leftClick.performed += i => { if(isHoveredOn) StartCoroutine(Drag()); /*StartCoroutine(Rotate());*/ }; // Run Drag() coroutine when left click is pressed
         leftClick.canceled += i => { isDragging = false; /*isRotating = false;*/ }; // When left click is released, stop dragging
 
-        
-        
+        outline = gameObject.AddComponent<Outline>(); // Adds outline component to all grabbable objects programmatically so that it's not required to add it within editor
+
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineColor = Color.magenta;
+        outline.OutlineWidth = 10f;
+
     }
 
     IEnumerator Drag() // coroutine to run click and drag functionality
@@ -67,29 +73,34 @@ public class Grabbable : MonoBehaviour
         {
             transform.position = worldPos + offset;
 
-            scrollRotation *= rotSpeed;
+            scrollRotation *= rotSpeed; // Set scroll rotation based on scroll wheel
 
-            transform.Rotate(Vector3.up, scrollRotation.y, Space.World);
+            transform.Rotate(Vector3.up, scrollRotation.y, Space.World); // Rotate object
 
             yield return null; // Stop coroutine when not dragging
         }
     }
 
-    /*
-    IEnumerator Rotate() // coroutine to run rotate functionality
+    private void Update()
     {
-        isRotating = true;
-
-        while (isRotating)
+        // Enables/disables outline based on hover state 
+        if (!isHoveredOn)
         {
-            // Rotation can only be performed while dragging on object
+            outline.enabled = false;
+        }
+        else
+        {
+            outline.enabled = true;
 
-            scrollRotation *= rotSpeed;
-
-            transform.Rotate(Vector3.up, scrollRotation.y, Space.World);
-
-            yield return null;
+            if (isDragging)
+            {
+                outline.OutlineColor = Color.white;
+            }
+            else
+            {
+                outline.OutlineColor = Color.magenta;
+            }
         }
     }
-    */
+
 }
