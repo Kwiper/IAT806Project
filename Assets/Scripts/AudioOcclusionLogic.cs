@@ -30,13 +30,9 @@ public class AudioOcclusionLogic : MonoBehaviour
     void SetOcclusionLevel() // Sets the amount of occlusion based on the amount of rays colliding with an object
     {
         occlusionLevel = 1 - (rayCastLogic.RayCastHitCounter / rayCastLogic.RayCastAmount); // The more rays that are hit, the lower the multiplier for occlusion
-        Debug.Log(rayCastLogic.RayCastHitCounter / rayCastLogic.RayCastAmount);
+        //Debug.Log(rayCastLogic.RayCastHitCounter / rayCastLogic.RayCastAmount);
     }
 
-    void SetVolume()
-    {
-
-    }
 
     void SetLowPass()
     {
