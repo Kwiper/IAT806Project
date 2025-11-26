@@ -7,12 +7,15 @@ public class UIFunctions : MonoBehaviour
 
     [SerializeField] GameObject menu;
 
+    [SerializeField] GameObject ui;
+
     private void Awake()
     {
         tab.Enable();
         esc.Enable();
 
-        esc.performed += i => { ToggleQuitMenu(); };
+        esc.performed += i => {if(ui.activeInHierarchy) ToggleQuitMenu(); };
+        tab.performed += i => {if(!menu.activeInHierarchy) ToggleUI(); };
     }
 
     public void Quit()
@@ -23,6 +26,11 @@ public class UIFunctions : MonoBehaviour
     public void ToggleQuitMenu()
     {
         menu.SetActive(!menu.activeInHierarchy);
+    }
+
+    void ToggleUI()
+    {
+        ui.SetActive(!ui.activeInHierarchy);
     }
 
 }

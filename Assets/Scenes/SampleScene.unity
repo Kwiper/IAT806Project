@@ -2967,6 +2967,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   menu: {fileID: 1510709761}
+  ui: {fileID: 1028646438}
 --- !u!4 &1193077181
 Transform:
   m_ObjectHideFlags: 0
@@ -3442,7 +3443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1510709762
 MonoBehaviour:
   m_ObjectHideFlags: 0
