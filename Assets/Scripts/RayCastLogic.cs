@@ -45,7 +45,7 @@ public class RayCastLogic : MonoBehaviour
             }
         }
 
-        lineRenderers = FindObjectsByType<LineRenderer>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID); // add all the line renderers to an array
+        lineRenderers = FindObjectsByType<LineRenderer>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID); // add all the instantiated line renderers to an array
 
     }
 
