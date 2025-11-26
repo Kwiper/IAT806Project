@@ -1,12 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RayCastLogic : MonoBehaviour
 {
 
     [SerializeField] GameObject sourceObject; // assign audio source
+    [SerializeField] GameObject lineRendererObject; // assign line renderer gameobject
 
     Transform[] raycastTargets; // Raycast targets of audio source
     Transform[] raycastSources; // Raycast source of audio listener 
+
+    LineRenderer[] lineRenderers; // list of line renderers to show debug lines
 
     [SerializeField] LayerMask occlusionLayer; // Assign walls to layer so that linecast only targets this layer
 
@@ -22,6 +26,17 @@ public class RayCastLogic : MonoBehaviour
     {
         raycastTargets = sourceObject.GetComponentsInChildren<Transform>(); // get the left, right, center targets of audio source
         raycastSources = GetComponentsInChildren<Transform>(); // Get the left, right, center targets of audio listener
+
+        for (int i = 0; i < raycastSources.Length; i++) // Pre-count the amount of rays that need to be cast to instantiate line renderer game objects for debug function
+        {
+            for (int j = 0; j < raycastTargets.Length; j++)
+            {
+                GameObject lineRenderer = Instantiate(lineRendererObject);
+                lineRenderer.SetActive(false);
+            }
+        }
+
+        lineRenderers = FindObjectsByType<LineRenderer>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID); // add all the line renderers to an array
     }
 
     // Update is called once per frame
@@ -39,25 +54,45 @@ public class RayCastLogic : MonoBehaviour
         {
             for(int j = 0; j < raycastTargets.Length; j++)
             {
-                CastLine(raycastSources[i].transform.position, raycastTargets[j].transform.position);
-                raycastAmount++;
+                raycastAmount++; // increase the amount of rays cast by 1
+                CastLine(raycastSources[i].transform.position, raycastTargets[j].transform.position, lineRenderers[raycastAmount-1]); // Cast the lines
             }
         }
     }
 
-    void CastLine(Vector3 start, Vector3 end) // Raycast logic
+    void CastLine(Vector3 start, Vector3 end, LineRenderer lineRenderer) // Raycast logic
     {
         RaycastHit hit;
-        Physics.Linecast(start, end, out hit, occlusionLayer);
+        Physics.Linecast(start, end, out hit, occlusionLayer); // cast out a line
+
+        Vector3[] positions = new Vector3[2]; // Assign positions to a vector
+        positions[0] = start;
+        positions[1] = end;
+
+        lineRenderer.positionCount = positions.Length; // Use positions list to get a count of points for the line renderer
+        lineRenderer.SetPositions(positions); // Set the positions of the line renderers to the raycast positions
 
         if (hit.collider)
         {
             raycastHitCounter++;
-            Debug.DrawLine(start, end, Color.red); // Display a red line when intersecting with an object
+            Debug.DrawLine(start, end, Color.red); // Display a red line when intersecting with an object, this is only for the editor version
+            lineRenderer.startColor = Color.red; // These lines set colour for the line renderers in the build version
+            lineRenderer.endColor = Color.red;
         }
         else
         {
-            Debug.DrawLine(start, end, Color.green); // Display a green line when not intersecting with an object
+            Debug.DrawLine(start, end, Color.green); // Display a green line when not intersecting with an object, this is only for the editor version
+            lineRenderer.startColor = Color.green; // These lines set colour for the line renderers in the build version
+            lineRenderer.endColor = Color.green;
         }
     }
+
+    public void EnableDebug(Toggle toggle)
+    {
+        for (int i = 0; i < lineRenderers.Length; i++)
+        {
+            lineRenderers[i].gameObject.SetActive(toggle.isOn);
+        }
+    }
+
 }
