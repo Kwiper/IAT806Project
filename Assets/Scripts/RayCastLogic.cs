@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class RayCastLogic : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class RayCastLogic : MonoBehaviour
 
     Transform[] raycastTargets; // Raycast targets of audio source
     Transform[] raycastSources; // Raycast source of audio listener 
+
+    List<float> initialSourcePositions; // List of initial raycast source positions for occlusion widening slider
+    List<float> initialTargetPositions; // List of initial raycast target positions for occlusion widening slider
 
     LineRenderer[] lineRenderers; // list of line renderers to show debug lines
 
@@ -27,16 +31,22 @@ public class RayCastLogic : MonoBehaviour
         raycastTargets = sourceObject.GetComponentsInChildren<Transform>(); // get the left, right, center targets of audio source
         raycastSources = GetComponentsInChildren<Transform>(); // Get the left, right, center targets of audio listener
 
+        initialSourcePositions = new List<float>();
+        initialTargetPositions = new List<float>();
+
         for (int i = 0; i < raycastSources.Length; i++) // Pre-count the amount of rays that need to be cast to instantiate line renderer game objects for debug function
         {
+            initialSourcePositions.Add(raycastTargets[i].transform.position.x); // Add initial source positions to list.
             for (int j = 0; j < raycastTargets.Length; j++)
             {
+                initialTargetPositions.Add(raycastTargets[j].transform.position.x); // Add initial source positions to list. 
                 GameObject lineRenderer = Instantiate(lineRendererObject);
                 lineRenderer.SetActive(false);
             }
         }
 
         lineRenderers = FindObjectsByType<LineRenderer>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID); // add all the line renderers to an array
+
     }
 
     // Update is called once per frame
@@ -87,11 +97,28 @@ public class RayCastLogic : MonoBehaviour
         }
     }
 
-    public void EnableDebug(Toggle toggle)
+    public void EnableDebug(Toggle toggle) // Public toggle function to enable debug visuals
     {
         for (int i = 0; i < lineRenderers.Length; i++)
         {
             lineRenderers[i].gameObject.SetActive(toggle.isOn);
+        }
+    }
+
+    public void OcclusionWidthSlider(Slider slider) // Slider function for occlusion widening
+    {
+        for (int i = 0; i < raycastSources.Length; i++)
+        {
+            Transform sourceTransform = raycastSources[i].transform;
+
+            sourceTransform.position = new Vector3(initialSourcePositions[i] * slider.value, sourceTransform.position.y, sourceTransform.position.z);
+
+            for (int j = 0; j < raycastTargets.Length; j++)
+            {
+                Transform targetTransform = raycastTargets[j].transform;
+
+                targetTransform.position = new Vector3(initialTargetPositions[j] * slider.value, targetTransform.position.y, targetTransform.position.z);
+            }
         }
     }
 
