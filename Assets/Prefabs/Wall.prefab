@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 68d076d8337af8748bd345d3a531f61c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -176,6 +176,8 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   rotSpeed: 5
+  highlightColour: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
+  selectionColour: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   rightClick:
     m_Name: Right Click
     m_Type: 1

@@ -18,6 +18,9 @@ public class Grabbable : MonoBehaviour
 
     Outline outline; // Outline component
 
+    [SerializeField] Color highlightColour; // Set colours for outline
+    [SerializeField] Color selectionColour; // Set colours for when object is grabbed
+
     protected bool isHoveredOn 
     {
         get
@@ -58,7 +61,7 @@ public class Grabbable : MonoBehaviour
         outline = gameObject.AddComponent<Outline>(); // Adds outline component to all grabbable objects programmatically so that it's not required to add it within editor
 
         outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineColor = Color.magenta;
+        outline.OutlineColor = highlightColour;
         outline.OutlineWidth = 10f;
 
     }
@@ -94,11 +97,11 @@ public class Grabbable : MonoBehaviour
 
             if (isDragging)
             {
-                outline.OutlineColor = Color.white;
+                outline.OutlineColor = selectionColour;
             }
             else
             {
-                outline.OutlineColor = Color.magenta;
+                outline.OutlineColor = highlightColour;
             }
         }
     }

@@ -22,7 +22,6 @@ public class RayCastLogic : MonoBehaviour
     {
         raycastTargets = sourceObject.GetComponentsInChildren<Transform>(); // get the left, right, center targets of audio source
         raycastSources = GetComponentsInChildren<Transform>(); // Get the left, right, center targets of audio listener
-
     }
 
     // Update is called once per frame
@@ -31,8 +30,6 @@ public class RayCastLogic : MonoBehaviour
         raycastHitCounter = 0; // Resets raycast hit counter every tick
         raycastAmount = 0;
         PerformRaycasts();
-
-
     }
 
     void PerformRaycasts()

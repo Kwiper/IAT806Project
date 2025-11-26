@@ -36,15 +36,15 @@ public class AudioLoader : MonoBehaviour
         }
     }
 
-    IEnumerator SetAudioClip()
+    IEnumerator SetAudioClip() // Set the audio clip in the audio source from the filepath
     {
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(fileName, GetAudioType(fileName))) 
+        using (UnityWebRequest webRequest = UnityWebRequestMultimedia.GetAudioClip(fileName, GetAudioType(fileName))) 
         {
-            yield return www.SendWebRequest();
+            yield return webRequest.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.Success)
+            if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
+                AudioClip clip = DownloadHandlerAudioClip.GetContent(webRequest);
                 if (audioSource != null)
                 {
                     audioSource.clip = clip;
@@ -57,7 +57,7 @@ public class AudioLoader : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Failed to load audio clip: " + www.error);
+                Debug.LogError("Failed to load audio clip: " + webRequest.error);
             }
         }
     }
@@ -67,7 +67,7 @@ public class AudioLoader : MonoBehaviour
         fileName = "file:///" + filePath[0]; // Set filepath to selected file in file browser
     }
 
-    AudioType GetAudioType(string fileName)
+    AudioType GetAudioType(string fileName) // Get the audio type based on file extension
     {
         if (fileName.Contains(".wav"))
         {
@@ -87,4 +87,17 @@ public class AudioLoader : MonoBehaviour
         }
     }
 
+    public void PlayPauseAudio() // Toggle playing/pausing of audio 
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            audioSource.Pause();
+        }
+    }
+
 }
+
