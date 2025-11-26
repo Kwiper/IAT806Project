@@ -55,8 +55,8 @@ public class Grabbable : MonoBehaviour
         mousePos.performed += context => { currentScreenPos = context.ReadValue<Vector2>(); }; // Set current screen position to read mouse position
         scroll.performed += context => { scrollRotation = context.ReadValue<Vector2>(); }; // Read scroll wheel value
         scroll.canceled += i => { scrollRotation = Vector2.zero; }; // Reset scroll value to zero when not scrolling
-        leftClick.performed += i => { if(isHoveredOn) StartCoroutine(Drag()); /*StartCoroutine(Rotate());*/ }; // Run Drag() coroutine when left click is pressed
-        leftClick.canceled += i => { isDragging = false; /*isRotating = false;*/ }; // When left click is released, stop dragging
+        leftClick.performed += i => { if(isHoveredOn) StartCoroutine(Drag()); }; // Run Drag() coroutine when left click is pressed
+        leftClick.canceled += i => { isDragging = false; }; // When left click is released, stop dragging
 
         outline = gameObject.AddComponent<Outline>(); // Adds outline component to all grabbable objects programmatically so that it's not required to add it within editor
 
