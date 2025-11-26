@@ -5,7 +5,7 @@ using System.Collections;
 public class Grabbable : MonoBehaviour
 {
 
-    [SerializeField] protected InputAction leftClick, mousePos, scroll; // set variables for mouse click and mouse position, having these in this script is kinda messy, move to its own input action class later
+    [SerializeField] protected InputAction leftClick, mousePos, scroll; // set variables for mouse click and mouse position
 
 
     Vector3 currentScreenPos; // current screen position
