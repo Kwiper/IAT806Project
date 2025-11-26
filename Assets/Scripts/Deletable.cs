@@ -29,6 +29,6 @@ public class Deletable : Grabbable // Inherit from Grabbable
 
     private void OnDestroy()
     {
-        SaveSystem.objects.Remove(this); // Remove object from save file list when destroyed
+        SaveSystem.objects.Remove(this); // Remove object from save file list
     }
 }
